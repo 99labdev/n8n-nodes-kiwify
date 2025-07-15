@@ -14,7 +14,7 @@ export class Kiwify implements INodeType {
 		group: ['transform'],
 		version: 1,
 		subtitle: '={{$parameter["operation"]}}',
-		description: 'Interact with Kiwify API',
+		description: 'Interagir com a API da Kiwify',
 		defaults: {
 			name: 'Kiwify',
 		},
@@ -28,32 +28,32 @@ export class Kiwify implements INodeType {
 		],
 		properties: [
 			{
-				displayName: 'Operation',
+				displayName: 'Operação',
 				name: 'operation',
 				type: 'options',
 				noDataExpression: true,
 				options: [
 					{
-						name: 'Get Account Details',
+						name: 'Obter Detalhes Da Conta',
 						value: 'getAccountDetails',
-						description: 'Get details of the Kiwify account',
-						action: 'Get account details',
+						description: 'Obter detalhes da conta Kiwify',
+						action: 'Obter detalhes da conta',
 					},
 					{
-						name: 'List Products',
+						name: 'Listar Produtos',
 						value: 'listProducts',
-						description: 'Get a list of all products',
-						action: 'List products',
+						description: 'Obter uma lista de todos os produtos',
+						action: 'Listar produtos',
 					},
 				],
 				default: 'getAccountDetails',
 			},
 			{
-				displayName: 'Page Size',
+				displayName: 'Tamanho Da Página',
 				name: 'pageSize',
 				type: 'number',
 				default: 10,
-				description: 'Number of products to return per page',
+				description: 'Número de produtos a retornar por página',
 				displayOptions: {
 					show: {
 						operation: ['listProducts'],
@@ -61,11 +61,11 @@ export class Kiwify implements INodeType {
 				},
 			},
 			{
-				displayName: 'Page Number',
+				displayName: 'Número Da Página',
 				name: 'pageNumber',
 				type: 'number',
 				default: 1,
-				description: 'Page number to retrieve',
+				description: 'Número da página a recuperar',
 				displayOptions: {
 					show: {
 						operation: ['listProducts'],
@@ -75,16 +75,16 @@ export class Kiwify implements INodeType {
 		],
 	};
 
-	// The function below is responsible for actually doing whatever this node
-	// is supposed to do. In this case, we're implementing Kiwify API operations.
+	// A função abaixo é responsável por executar o que este node
+	// deve fazer. Neste caso, estamos implementando operações da API da Kiwify.
 	async execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
 		const items = this.getInputData();
 		const returnData: INodeExecutionData[] = [];
 
-		// Get credentials
+		// Obter credenciais
 		const credentials = await this.getCredentials('kiwifyApi');
 
-		// Get access token
+		// Obter token de acesso
 		const tokenOptions = {
 			method: 'POST' as const,
 			url: 'https://public-api.kiwify.com/v1/oauth/token',
@@ -108,7 +108,7 @@ export class Kiwify implements INodeType {
 				let responseData;
 
 				if (operation === 'getAccountDetails') {
-					// Make API request to get account details
+					// Fazer requisição à API para obter detalhes da conta
 					const options = {
 						method: 'GET' as const,
 						url: 'https://public-api.kiwify.com/v1/account-details',
@@ -121,11 +121,11 @@ export class Kiwify implements INodeType {
 
 					responseData = await this.helpers.request(options);
 				} else if (operation === 'listProducts') {
-					// Get parameters for list products
+					// Obter parâmetros para listar produtos
 					const pageSize = this.getNodeParameter('pageSize', i) as number;
 					const pageNumber = this.getNodeParameter('pageNumber', i) as number;
 
-					// Build query parameters
+					// Construir parâmetros de consulta
 					const queryParams: string[] = [];
 					if (pageSize) {
 						queryParams.push(`page_size=${pageSize}`);
@@ -134,7 +134,7 @@ export class Kiwify implements INodeType {
 						queryParams.push(`page_number=${pageNumber}`);
 					}
 
-					// Make API request to list products
+					// Fazer requisição à API para listar produtos
 					const options = {
 						method: 'GET' as const,
 						url: `https://public-api.kiwify.com/v1/products${queryParams.length ? '?' + queryParams.join('&') : ''}`,
