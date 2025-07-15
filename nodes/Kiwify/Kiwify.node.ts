@@ -112,6 +112,12 @@ export class Kiwify implements INodeType {
 						action: 'Listar afiliados',
 					},
 					{
+						name: 'Listar Participantes',
+						value: 'listParticipants',
+						description: 'Obter uma lista de participantes de eventos',
+						action: 'Listar participantes',
+					},
+					{
 						name: 'Listar Produtos',
 						value: 'listProducts',
 						description: 'Obter uma lista de todos os produtos',
@@ -321,6 +327,164 @@ export class Kiwify implements INodeType {
 				displayOptions: {
 					show: {
 						operation: ['listWebhooks'],
+					},
+				},
+			},
+			// Parâmetros para Listar Participantes
+			{
+				displayName: 'ID Do Produto',
+				name: 'productIdParticipants',
+				type: 'string',
+				required: true,
+				default: '',
+				description: 'ID do produto para listar participantes',
+				displayOptions: {
+					show: {
+						operation: ['listParticipants'],
+					},
+				},
+			},
+			{
+				displayName: 'Check-in Realizado',
+				name: 'checkedIn',
+				type: 'boolean',
+				default: false,
+				description: 'Whether to filter by participants who have checked in',
+				displayOptions: {
+					show: {
+						operation: ['listParticipants'],
+					},
+				},
+			},
+			{
+				displayName: 'Tamanho Da Página',
+				name: 'pageSizeParticipants',
+				type: 'number',
+				default: 10,
+				description: 'Número de participantes a retornar por página',
+				displayOptions: {
+					show: {
+						operation: ['listParticipants'],
+					},
+				},
+			},
+			{
+				displayName: 'Número Da Página',
+				name: 'pageNumberParticipants',
+				type: 'number',
+				default: 1,
+				description: 'Número da página a recuperar',
+				displayOptions: {
+					show: {
+						operation: ['listParticipants'],
+					},
+				},
+			},
+			{
+				displayName: 'Data De Criação - Início',
+				name: 'createdAtStartDate',
+				type: 'string',
+				default: '',
+				description: 'Data de início para filtrar por data de criação (formato: YYYY-MM-DD)',
+				displayOptions: {
+					show: {
+						operation: ['listParticipants'],
+					},
+				},
+			},
+			{
+				displayName: 'Data De Criação - Fim',
+				name: 'createdAtEndDate',
+				type: 'string',
+				default: '',
+				description: 'Data de fim para filtrar por data de criação (formato: YYYY-MM-DD)',
+				displayOptions: {
+					show: {
+						operation: ['listParticipants'],
+					},
+				},
+			},
+			{
+				displayName: 'Data De Atualização - Início',
+				name: 'updatedAtStartDate',
+				type: 'string',
+				default: '',
+				description: 'Data de início para filtrar por data de atualização (formato: YYYY-MM-DD)',
+				displayOptions: {
+					show: {
+						operation: ['listParticipants'],
+					},
+				},
+			},
+			{
+				displayName: 'Data De Atualização - Fim',
+				name: 'updatedAtEndDate',
+				type: 'string',
+				default: '',
+				description: 'Data de fim para filtrar por data de atualização (formato: YYYY-MM-DD)',
+				displayOptions: {
+					show: {
+						operation: ['listParticipants'],
+					},
+				},
+			},
+			{
+				displayName: 'External ID',
+				name: 'externalId',
+				type: 'string',
+				default: '',
+				description: 'Filtrar por External ID do participante',
+				displayOptions: {
+					show: {
+						operation: ['listParticipants'],
+					},
+				},
+			},
+			{
+				displayName: 'Batch ID',
+				name: 'batchId',
+				type: 'string',
+				default: '',
+				description: 'Filtrar por Batch ID do lote',
+				displayOptions: {
+					show: {
+						operation: ['listParticipants'],
+					},
+				},
+			},
+			{
+				displayName: 'Telefone',
+				name: 'phoneFilter',
+				type: 'string',
+				default: '',
+				description: 'Filtrar por telefone do participante',
+				displayOptions: {
+					show: {
+						operation: ['listParticipants'],
+					},
+				},
+			},
+			{
+				displayName: 'CPF',
+				name: 'cpfFilter',
+				type: 'string',
+				default: '',
+				description: 'Filtrar por CPF do participante',
+				displayOptions: {
+					show: {
+						operation: ['listParticipants'],
+					},
+				},
+			},
+			{
+				displayName: 'ID Do Pedido',
+				name: 'orderIdFilter',
+				type: 'string',
+				default: '',
+				description: 'Filtrar por ID do pedido',
+				displayOptions: {
+					show: {
+						operation: ['listParticipants'],
 					},
 				},
 			},
@@ -1155,6 +1319,49 @@ export class Kiwify implements INodeType {
 					const options = {
 						method: 'DELETE' as const,
 						url: `https://public-api.kiwify.com/v1/webhooks/${webhookId}`,
+						headers: {
+							'Authorization': `Bearer ${accessToken}`,
+							'x-kiwify-account-id': credentials.accountId as string,
+						},
+						json: true,
+					};
+
+					responseData = await this.helpers.request(options);
+				} else if (operation === 'listParticipants') {
+					// Obter parâmetros para listar participantes
+					const productIdParticipants = this.getNodeParameter('productIdParticipants', i) as string;
+					const checkedIn = this.getNodeParameter('checkedIn', i) as boolean;
+					const pageSizeParticipants = this.getNodeParameter('pageSizeParticipants', i) as number;
+					const pageNumberParticipants = this.getNodeParameter('pageNumberParticipants', i) as number;
+					const createdAtStartDate = this.getNodeParameter('createdAtStartDate', i) as string;
+					const createdAtEndDate = this.getNodeParameter('createdAtEndDate', i) as string;
+					const updatedAtStartDate = this.getNodeParameter('updatedAtStartDate', i) as string;
+					const updatedAtEndDate = this.getNodeParameter('updatedAtEndDate', i) as string;
+					const externalId = this.getNodeParameter('externalId', i) as string;
+					const batchId = this.getNodeParameter('batchId', i) as string;
+					const phoneFilter = this.getNodeParameter('phoneFilter', i) as string;
+					const cpfFilter = this.getNodeParameter('cpfFilter', i) as string;
+					const orderIdFilter = this.getNodeParameter('orderIdFilter', i) as string;
+
+					// Construir parâmetros de consulta
+					const queryParams: string[] = [];
+					if (checkedIn !== undefined) queryParams.push(`checked_in=${checkedIn}`);
+					if (pageSizeParticipants) queryParams.push(`page_size=${pageSizeParticipants}`);
+					if (pageNumberParticipants) queryParams.push(`page_number=${pageNumberParticipants}`);
+					if (createdAtStartDate) queryParams.push(`created_at_start_date=${createdAtStartDate}`);
+					if (createdAtEndDate) queryParams.push(`created_at_end_date=${createdAtEndDate}`);
+					if (updatedAtStartDate) queryParams.push(`updated_at_start_date=${updatedAtStartDate}`);
+					if (updatedAtEndDate) queryParams.push(`updated_at_end_date=${updatedAtEndDate}`);
+					if (externalId) queryParams.push(`external_id=${externalId}`);
+					if (batchId) queryParams.push(`batch_id=${batchId}`);
+					if (phoneFilter) queryParams.push(`phone=${phoneFilter}`);
+					if (cpfFilter) queryParams.push(`cpf=${cpfFilter}`);
+					if (orderIdFilter) queryParams.push(`order_id=${orderIdFilter}`);
+
+					// Fazer requisição à API para listar participantes
+					const options = {
+						method: 'GET' as const,
+						url: `https://public-api.kiwify.com/v1/events/${productIdParticipants}/participants${queryParams.length ? '?' + queryParams.join('&') : ''}`,
 						headers: {
 							'Authorization': `Bearer ${accessToken}`,
 							'x-kiwify-account-id': credentials.accountId as string,

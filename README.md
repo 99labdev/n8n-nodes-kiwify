@@ -78,6 +78,22 @@ Siga o [guia de instalação](https://docs.n8n.io/integrations/community-nodes/i
 - **Deletar Webhook**: Delete um webhook específico
   - **ID Do Webhook** (obrigatório): ID do webhook a ser deletado
 
+### Eventos
+- **Listar Participantes**: Obtenha uma lista de participantes de eventos
+  - **ID Do Produto** (obrigatório): ID do produto para listar participantes
+  - **Check-in Realizado** (opcional): Filtrar por participantes que fizeram check-in
+  - **Tamanho Da Página** (opcional): Número de participantes a retornar por página (padrão: 10)
+  - **Número Da Página** (opcional): Número da página a recuperar (padrão: 1)
+  - **Data De Criação - Início** (opcional): Data de início para filtrar por data de criação (formato: YYYY-MM-DD)
+  - **Data De Criação - Fim** (opcional): Data de fim para filtrar por data de criação (formato: YYYY-MM-DD)
+  - **Data De Atualização - Início** (opcional): Data de início para filtrar por data de atualização (formato: YYYY-MM-DD)
+  - **Data De Atualização - Fim** (opcional): Data de fim para filtrar por data de atualização (formato: YYYY-MM-DD)
+  - **External ID** (opcional): Filtrar por External ID do participante
+  - **Batch ID** (opcional): Filtrar por Batch ID do lote
+  - **Telefone** (opcional): Filtrar por telefone do participante
+  - **CPF** (opcional): Filtrar por CPF do participante
+  - **ID Do Pedido** (opcional): Filtrar por ID do pedido
+
 ### Financeiro
 - **Consultar Saldos**: Obtenha todos os saldos da conta
 - **Consultar Saldo Específico**: Obtenha um saldo específico por Legal Entity ID
