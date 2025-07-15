@@ -1,5 +1,7 @@
 # n8n-nodes-kiwify
 
+![logo](logo.png)
+
 Este é um node da comunidade n8n que permite integrar com a API da Kiwify. Ele possibilita acessar vários serviços e dados da Kiwify dentro dos seus workflows do n8n.
 
 [Kiwify](https://kiwify.com.br/) é uma plataforma de vendas de produtos digitais que permite criadores venderem cursos, ebooks e outros conteúdos digitais.
