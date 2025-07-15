@@ -44,6 +44,15 @@ Siga o [guia de instalação](https://docs.n8n.io/integrations/community-nodes/i
 - **Consultar Saldos**: Obtenha todos os saldos da conta
 - **Consultar Saldo Específico**: Obtenha um saldo específico por Legal Entity ID
   - **Legal Entity ID** (obrigatório): ID da entidade legal para consultar saldo específico
+- **Listar Saques**: Obtenha uma lista de todos os saques
+  - **Legal Entity ID** (opcional): Filtrar saques por Legal Entity ID
+  - **Tamanho Da Página** (opcional): Número de saques a retornar por página (padrão: 10)
+  - **Número Da Página** (opcional): Número da página a recuperar (padrão: 1)
+- **Consultar Saque**: Obtenha detalhes de um saque específico
+  - **ID Do Saque** (obrigatório): ID do saque a ser consultado
+- **Realizar Saque**: Solicite a realização de um saque
+  - **Valor Do Saque** (obrigatório): Valor do saque a ser solicitado (em centavos)
+  - **Legal Entity ID** (obrigatório): ID da entidade legal para consultar saldo específico
 
 ## Credenciais
 

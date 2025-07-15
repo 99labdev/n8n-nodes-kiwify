@@ -58,6 +58,12 @@ export class Kiwify implements INodeType {
 						action: 'Consultar saldos',
 					},
 					{
+						name: 'Consultar Saque',
+						value: 'getPayout',
+						description: 'Obter detalhes de um saque específico',
+						action: 'Consultar saque',
+					},
+					{
 						name: 'Consultar Venda',
 						value: 'getSale',
 						description: 'Obter detalhes de uma venda específica',
@@ -70,6 +76,12 @@ export class Kiwify implements INodeType {
 						action: 'Listar produtos',
 					},
 					{
+						name: 'Listar Saques',
+						value: 'listPayouts',
+						description: 'Obter uma lista de todos os saques',
+						action: 'Listar saques',
+					},
+					{
 						name: 'Listar Vendas',
 						value: 'listSales',
 						description: 'Obter uma lista de todas as vendas',
@@ -80,6 +92,12 @@ export class Kiwify implements INodeType {
 						value: 'getAccountDetails',
 						description: 'Obter detalhes da conta Kiwify',
 						action: 'Obter detalhes da conta',
+					},
+					{
+						name: 'Realizar Saque',
+						value: 'createPayout',
+						description: 'Solicitar a realização de um saque',
+						action: 'Realizar saque',
 					},
 					{
 						name: 'Reembolsar Venda',
@@ -114,6 +132,71 @@ export class Kiwify implements INodeType {
 				displayOptions: {
 					show: {
 						operation: ['refundSale'],
+					},
+				},
+			},
+			// Parâmetro para Consultar Saque
+			{
+				displayName: 'ID Do Saque',
+				name: 'payoutId',
+				type: 'string',
+				required: true,
+				default: '',
+				description: 'ID do saque a ser consultado',
+				displayOptions: {
+					show: {
+						operation: ['getPayout'],
+					},
+				},
+			},
+			// Parâmetro para Realizar Saque
+			{
+				displayName: 'Valor Do Saque',
+				name: 'payoutAmount',
+				type: 'number',
+				required: true,
+				default: 0,
+				description: 'Valor do saque a ser solicitado (em centavos)',
+				displayOptions: {
+					show: {
+						operation: ['createPayout'],
+					},
+				},
+			},
+			// Parâmetros para Listar Saques
+			{
+				displayName: 'Legal Entity ID',
+				name: 'legalEntityIdFilter',
+				type: 'string',
+				default: '',
+				description: 'Filtrar saques por Legal Entity ID (opcional)',
+				displayOptions: {
+					show: {
+						operation: ['listPayouts'],
+					},
+				},
+			},
+			{
+				displayName: 'Tamanho Da Página',
+				name: 'pageSizePayouts',
+				type: 'number',
+				default: 10,
+				description: 'Número de saques a retornar por página',
+				displayOptions: {
+					show: {
+						operation: ['listPayouts'],
+					},
+				},
+			},
+			{
+				displayName: 'Número Da Página',
+				name: 'pageNumberPayouts',
+				type: 'number',
+				default: 1,
+				description: 'Número da página a recuperar',
+				displayOptions: {
+					show: {
+						operation: ['listPayouts'],
 					},
 				},
 			},
@@ -516,6 +599,69 @@ export class Kiwify implements INodeType {
 							'Authorization': `Bearer ${accessToken}`,
 							'x-kiwify-account-id': credentials.accountId as string,
 						},
+						json: true,
+					};
+
+					responseData = await this.helpers.request(options);
+				} else if (operation === 'listPayouts') {
+					// Obter parâmetros para listar saques
+					const legalEntityIdFilter = this.getNodeParameter('legalEntityIdFilter', i) as string;
+					const pageSizePayouts = this.getNodeParameter('pageSizePayouts', i) as number;
+					const pageNumberPayouts = this.getNodeParameter('pageNumberPayouts', i) as number;
+
+					// Construir parâmetros de consulta
+					const queryParams: string[] = [];
+					if (legalEntityIdFilter) queryParams.push(`legal_entity_id=${legalEntityIdFilter}`);
+					if (pageSizePayouts) queryParams.push(`page_size=${pageSizePayouts}`);
+					if (pageNumberPayouts) queryParams.push(`page_number=${pageNumberPayouts}`);
+
+					// Fazer requisição à API para listar saques
+					const options = {
+						method: 'GET' as const,
+						url: `https://public-api.kiwify.com/v1/payouts${queryParams.length ? '?' + queryParams.join('&') : ''}`,
+						headers: {
+							'Authorization': `Bearer ${accessToken}`,
+							'x-kiwify-account-id': credentials.accountId as string,
+						},
+						json: true,
+					};
+
+					responseData = await this.helpers.request(options);
+				} else if (operation === 'getPayout') {
+					// Obter parâmetro do ID do saque
+					const payoutId = this.getNodeParameter('payoutId', i) as string;
+
+					// Fazer requisição à API para consultar saque específico
+					const options = {
+						method: 'GET' as const,
+						url: `https://public-api.kiwify.com/v1/payouts/${payoutId}`,
+						headers: {
+							'Authorization': `Bearer ${accessToken}`,
+							'x-kiwify-account-id': credentials.accountId as string,
+						},
+						json: true,
+					};
+
+					responseData = await this.helpers.request(options);
+				} else if (operation === 'createPayout') {
+					// Obter parâmetro do valor do saque
+					const payoutAmount = this.getNodeParameter('payoutAmount', i) as number;
+
+					// Construir body da requisição
+					const body = {
+						amount: payoutAmount,
+					};
+
+					// Fazer requisição à API para criar saque
+					const options = {
+						method: 'POST' as const,
+						url: 'https://public-api.kiwify.com/v1/payouts/',
+						headers: {
+							'Authorization': `Bearer ${accessToken}`,
+							'x-kiwify-account-id': credentials.accountId as string,
+							'Content-Type': 'application/json',
+						},
+						body: JSON.stringify(body),
 						json: true,
 					};
 
