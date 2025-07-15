@@ -46,6 +46,18 @@ export class Kiwify implements INodeType {
 						action: 'Consultar produto',
 					},
 					{
+						name: 'Consultar Saldo Específico',
+						value: 'getSpecificBalance',
+						description: 'Obter saldo específico por legal entity ID',
+						action: 'Consultar saldo espec fico',
+					},
+					{
+						name: 'Consultar Saldos',
+						value: 'getBalance',
+						description: 'Obter todos os saldos da conta',
+						action: 'Consultar saldos',
+					},
+					{
 						name: 'Consultar Venda',
 						value: 'getSale',
 						description: 'Obter detalhes de uma venda específica',
@@ -102,6 +114,20 @@ export class Kiwify implements INodeType {
 				displayOptions: {
 					show: {
 						operation: ['refundSale'],
+					},
+				},
+			},
+			// Parâmetro para Consultar Saldo Específico
+			{
+				displayName: 'Legal Entity ID',
+				name: 'legalEntityId',
+				type: 'string',
+				required: true,
+				default: '',
+				description: 'ID da entidade legal para consultar saldo específico',
+				displayOptions: {
+					show: {
+						operation: ['getSpecificBalance'],
 					},
 				},
 			},
@@ -457,6 +483,35 @@ export class Kiwify implements INodeType {
 					const options = {
 						method: 'GET' as const,
 						url: `https://public-api.kiwify.com/v1/stats?${queryParams.join('&')}`,
+						headers: {
+							'Authorization': `Bearer ${accessToken}`,
+							'x-kiwify-account-id': credentials.accountId as string,
+						},
+						json: true,
+					};
+
+					responseData = await this.helpers.request(options);
+				} else if (operation === 'getBalance') {
+					// Fazer requisição à API para obter todos os saldos
+					const options = {
+						method: 'GET' as const,
+						url: 'https://public-api.kiwify.com/v1/balance',
+						headers: {
+							'Authorization': `Bearer ${accessToken}`,
+							'x-kiwify-account-id': credentials.accountId as string,
+						},
+						json: true,
+					};
+
+					responseData = await this.helpers.request(options);
+				} else if (operation === 'getSpecificBalance') {
+					// Obter parâmetro do Legal Entity ID
+					const legalEntityId = this.getNodeParameter('legalEntityId', i) as string;
+
+					// Fazer requisição à API para obter saldo específico
+					const options = {
+						method: 'GET' as const,
+						url: `https://public-api.kiwify.com/v1/balance/${legalEntityId}`,
 						headers: {
 							'Authorization': `Bearer ${accessToken}`,
 							'x-kiwify-account-id': credentials.accountId as string,

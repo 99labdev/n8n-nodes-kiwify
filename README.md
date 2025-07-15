@@ -40,6 +40,11 @@ Siga o [guia de instalação](https://docs.n8n.io/integrations/community-nodes/i
   - **Data De Fim** (obrigatório): Data de fim para estatísticas (formato: YYYY-MM-DD)
   - **ID Do Produto** (opcional): ID do produto para estatísticas específicas
 
+### Financeiro
+- **Consultar Saldos**: Obtenha todos os saldos da conta
+- **Consultar Saldo Específico**: Obtenha um saldo específico por Legal Entity ID
+  - **Legal Entity ID** (obrigatório): ID da entidade legal para consultar saldo específico
+
 ## Credenciais
 
 Para usar este node, você precisa configurar as credenciais da API da Kiwify:
