@@ -45,8 +45,27 @@ export class Kiwify implements INodeType {
 						description: 'Obter uma lista de todos os produtos',
 						action: 'Listar produtos',
 					},
+					{
+						name: 'Consultar Produto',
+						value: 'getProduct',
+						description: 'Obter detalhes de um produto específico',
+						action: 'Consultar produto',
+					},
 				],
 				default: 'getAccountDetails',
+			},
+			{
+				displayName: 'ID Do Produto',
+				name: 'productId',
+				type: 'string',
+				required: true,
+				default: '',
+				description: 'ID do produto a ser consultado',
+				displayOptions: {
+					show: {
+						operation: ['getProduct'],
+					},
+				},
 			},
 			{
 				displayName: 'Tamanho Da Página',
@@ -138,6 +157,22 @@ export class Kiwify implements INodeType {
 					const options = {
 						method: 'GET' as const,
 						url: `https://public-api.kiwify.com/v1/products${queryParams.length ? '?' + queryParams.join('&') : ''}`,
+						headers: {
+							'Authorization': `Bearer ${accessToken}`,
+							'x-kiwify-account-id': credentials.accountId as string,
+						},
+						json: true,
+					};
+
+					responseData = await this.helpers.request(options);
+				} else if (operation === 'getProduct') {
+					// Obter parâmetro do ID do produto
+					const productId = this.getNodeParameter('productId', i) as string;
+
+					// Fazer requisição à API para consultar produto específico
+					const options = {
+						method: 'GET' as const,
+						url: `https://public-api.kiwify.com/v1/products/${productId}`,
 						headers: {
 							'Authorization': `Bearer ${accessToken}`,
 							'x-kiwify-account-id': credentials.accountId as string,

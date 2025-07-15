@@ -17,6 +17,8 @@ Siga o [guia de instalação](https://docs.n8n.io/integrations/community-nodes/i
 - **Listar Produtos**: Obtenha uma lista de todos os produtos
   - **Page Size** (opcional): Número de produtos a retornar por página (padrão: 10)
   - **Page Number** (opcional): Número da página a recuperar (padrão: 1)
+- **Consultar Produto**: Obtenha os detalhes de um produto específico
+  - **ID Do Produto** (obrigatório): ID do produto a ser consultado
 
 ## Credenciais
 
