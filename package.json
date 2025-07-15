@@ -19,7 +19,7 @@
     "url": "https://github.com/99labdev/n8n-nodes-kiwify.git"
   },
   "engines": {
-    "node": ">=20.15"
+    "node": ">=20.11"
   },
   "main": "index.js",
   "scripts": {

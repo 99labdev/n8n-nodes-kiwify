@@ -11,42 +11,53 @@ export class KiwifyApi implements ICredentialType {
 	documentationUrl = 'https://docs.kiwify.com.br/api-reference/general';
 	properties: INodeProperties[] = [
 		{
-			displayName: 'Bearer Token',
-			name: 'bearerToken',
+			displayName: 'Client ID',
+			name: 'clientId',
+			type: 'string',
+			default: '',
+			required: true,
+			description: 'Your Kiwify Client ID from API dashboard',
+		},
+		{
+			displayName: 'Client Secret',
+			name: 'clientSecret',
 			type: 'string',
 			default: '',
 			typeOptions: {
 				password: true,
 			},
-			description: 'The OAuth Bearer token for Kiwify API authentication',
+			required: true,
+			description: 'Your Kiwify Client Secret from API dashboard',
 		},
 		{
 			displayName: 'Account ID',
 			name: 'accountId',
 			type: 'string',
 			default: '',
+			required: true,
 			description: 'Your Kiwify Account ID (x-kiwify-account-id header)',
 		},
 	];
 
-	// This allows the credential to be used by other parts of n8n
-	// stating how this credential is injected as part of the request
+	// This will be implemented in the node itself for OAuth flow
 	authenticate: IAuthenticateGeneric = {
 		type: 'generic',
-		properties: {
-			headers: {
-				'Authorization': '={{"Bearer " + $credentials.bearerToken}}',
-				'x-kiwify-account-id': '={{$credentials.accountId}}',
-			},
-		},
+		properties: {},
 	};
 
-	// The block below tells how this credential can be tested
+	// Test the credentials by trying to get an access token
 	test: ICredentialTestRequest = {
 		request: {
 			baseURL: 'https://public-api.kiwify.com/v1',
-			url: '/account-details',
-			method: 'GET',
+			url: '/oauth/token',
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded',
+			},
+			body: {
+				client_id: '={{$credentials.clientId}}',
+				client_secret: '={{$credentials.clientSecret}}',
+			},
 		},
 	};
 }

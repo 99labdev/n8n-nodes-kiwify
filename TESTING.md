@@ -1,6 +1,9 @@
 # Como testar localmente
 
-## Pré-requisitos
+## Pré-req3. Adicione uma nova credencial "Kiwify API":
+   - **Client ID**: Seu Client ID da Kiwify API
+   - **Client Secret**: Seu Client Secret da Kiwify API
+   - **Account ID**: Seu Account ID da Kiwifyitos
 
 1. Instale o n8n globalmente:
 ```bash
