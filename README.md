@@ -142,13 +142,6 @@ Para mais informações sobre autenticação, visite a [documentação da API da
 * [Documentação de nodes da comunidade n8n](https://docs.n8n.io/integrations/community-nodes/)
 * [Documentação da API da Kiwify](https://docs.kiwify.com.br/api-reference/general)
 
-## Histórico de versões
-
-### 0.1.0
-- Lançamento inicial
-- Adicionada operação de detalhes da conta
-- Integração básica com a API da Kiwify
-
 ## Licença
 
 [MIT](https://github.com/99labdev/n8n-nodes-kiwify/blob/master/LICENSE.md)
