@@ -34,6 +34,12 @@ export class Kiwify implements INodeType {
 				noDataExpression: true,
 				options: [
 					{
+						name: 'Consultar Afiliado',
+						value: 'getAffiliate',
+						description: 'Obter detalhes de um afiliado específico',
+						action: 'Consultar afiliado',
+					},
+					{
 						name: 'Consultar Estatísticas De Vendas',
 						value: 'getSalesStats',
 						description: 'Obter estatísticas de vendas',
@@ -68,6 +74,18 @@ export class Kiwify implements INodeType {
 						value: 'getSale',
 						description: 'Obter detalhes de uma venda específica',
 						action: 'Consultar venda',
+					},
+					{
+						name: 'Editar Afiliado',
+						value: 'editAffiliate',
+						description: 'Editar informações de um afiliado específico',
+						action: 'Editar afiliado',
+					},
+					{
+						name: 'Listar Afiliados',
+						value: 'listAffiliates',
+						description: 'Obter uma lista de todos os afiliados',
+						action: 'Listar afiliados',
 					},
 					{
 						name: 'Listar Produtos',
@@ -122,16 +140,114 @@ export class Kiwify implements INodeType {
 					},
 				},
 			},
-			// Parâmetros para Reembolsar Venda
+			// Parâmetro para Consultar Afiliado e Editar Afiliado
 			{
-				displayName: 'Chave PIX',
-				name: 'pixKey',
+				displayName: 'ID Do Afiliado',
+				name: 'affiliateId',
 				type: 'string',
+				required: true,
 				default: '',
-				description: 'Chave PIX para reembolso (opcional)',
+				description: 'ID do afiliado a ser consultado ou editado',
 				displayOptions: {
 					show: {
-						operation: ['refundSale'],
+						operation: ['getAffiliate', 'editAffiliate'],
+					},
+				},
+			},
+			// Parâmetros para Editar Afiliado
+			{
+				displayName: 'Comissão',
+				name: 'affiliateCommission',
+				type: 'number',
+				default: 0,
+				description: 'Nova comissão do afiliado (opcional)',
+				displayOptions: {
+					show: {
+						operation: ['editAffiliate'],
+					},
+				},
+			},
+			{
+				displayName: 'Status',
+				name: 'affiliateStatus',
+				type: 'options',
+				default: 'active',
+				description: 'Novo status do afiliado (opcional)',
+				options: [
+					{ name: 'Ativo', value: 'active' },
+					{ name: 'Bloqueado', value: 'blocked' },
+					{ name: 'Recusado', value: 'refused' },
+				],
+				displayOptions: {
+					show: {
+						operation: ['editAffiliate'],
+					},
+				},
+			},
+			// Parâmetros para Listar Afiliados
+			{
+				displayName: 'Tamanho Da Página',
+				name: 'pageSizeAffiliates',
+				type: 'number',
+				default: 10,
+				description: 'Número de afiliados a retornar por página',
+				displayOptions: {
+					show: {
+						operation: ['listAffiliates'],
+					},
+				},
+			},
+			{
+				displayName: 'Número Da Página',
+				name: 'pageNumberAffiliates',
+				type: 'number',
+				default: 1,
+				description: 'Número da página a recuperar',
+				displayOptions: {
+					show: {
+						operation: ['listAffiliates'],
+					},
+				},
+			},
+			{
+				displayName: 'Status',
+				name: 'statusFilter',
+				type: 'options',
+				default: '',
+				description: 'Filtrar afiliados por status',
+				options: [
+					{ name: 'Todos', value: '' },
+					{ name: 'Ativo', value: 'active' },
+					{ name: 'Bloqueado', value: 'blocked' },
+					{ name: 'Recusado', value: 'refused' },
+				],
+				displayOptions: {
+					show: {
+						operation: ['listAffiliates'],
+					},
+				},
+			},
+			{
+				displayName: 'ID Do Produto',
+				name: 'productIdAffiliateFilter',
+				type: 'string',
+				default: '',
+				description: 'Filtrar afiliados por ID do produto (opcional)',
+				displayOptions: {
+					show: {
+						operation: ['listAffiliates'],
+					},
+				},
+			},
+			{
+				displayName: 'Buscar',
+				name: 'searchTerm',
+				type: 'string',
+				default: '',
+				description: 'Termo de busca para filtrar afiliados (opcional)',
+				displayOptions: {
+					show: {
+						operation: ['listAffiliates'],
 					},
 				},
 			},
@@ -656,6 +772,79 @@ export class Kiwify implements INodeType {
 					const options = {
 						method: 'POST' as const,
 						url: 'https://public-api.kiwify.com/v1/payouts/',
+						headers: {
+							'Authorization': `Bearer ${accessToken}`,
+							'x-kiwify-account-id': credentials.accountId as string,
+							'Content-Type': 'application/json',
+						},
+						body: JSON.stringify(body),
+						json: true,
+					};
+
+					responseData = await this.helpers.request(options);
+				} else if (operation === 'listAffiliates') {
+					// Obter parâmetros para listar afiliados
+					const pageSizeAffiliates = this.getNodeParameter('pageSizeAffiliates', i) as number;
+					const pageNumberAffiliates = this.getNodeParameter('pageNumberAffiliates', i) as number;
+					const statusFilter = this.getNodeParameter('statusFilter', i) as string;
+					const productIdAffiliateFilter = this.getNodeParameter('productIdAffiliateFilter', i) as string;
+					const searchTerm = this.getNodeParameter('searchTerm', i) as string;
+
+					// Construir parâmetros de consulta
+					const queryParams: string[] = [];
+					if (pageSizeAffiliates) queryParams.push(`page_size=${pageSizeAffiliates}`);
+					if (pageNumberAffiliates) queryParams.push(`page_number=${pageNumberAffiliates}`);
+					if (statusFilter) queryParams.push(`status=${statusFilter}`);
+					if (productIdAffiliateFilter) queryParams.push(`product_id=${productIdAffiliateFilter}`);
+					if (searchTerm) queryParams.push(`search=${searchTerm}`);
+
+					// Fazer requisição à API para listar afiliados
+					const options = {
+						method: 'GET' as const,
+						url: `https://public-api.kiwify.com/v1/affiliates${queryParams.length ? '?' + queryParams.join('&') : ''}`,
+						headers: {
+							'Authorization': `Bearer ${accessToken}`,
+							'x-kiwify-account-id': credentials.accountId as string,
+						},
+						json: true,
+					};
+
+					responseData = await this.helpers.request(options);
+				} else if (operation === 'getAffiliate') {
+					// Obter parâmetro do ID do afiliado
+					const affiliateId = this.getNodeParameter('affiliateId', i) as string;
+
+					// Fazer requisição à API para consultar afiliado específico
+					const options = {
+						method: 'GET' as const,
+						url: `https://public-api.kiwify.com/v1/affiliates/${affiliateId}`,
+						headers: {
+							'Authorization': `Bearer ${accessToken}`,
+							'x-kiwify-account-id': credentials.accountId as string,
+						},
+						json: true,
+					};
+
+					responseData = await this.helpers.request(options);
+				} else if (operation === 'editAffiliate') {
+					// Obter parâmetros para editar afiliado
+					const affiliateId = this.getNodeParameter('affiliateId', i) as string;
+					const affiliateCommission = this.getNodeParameter('affiliateCommission', i) as number;
+					const affiliateStatus = this.getNodeParameter('affiliateStatus', i) as string;
+
+					// Construir body da requisição
+					const body: any = {};
+					if (affiliateCommission > 0) {
+						body.commission = affiliateCommission;
+					}
+					if (affiliateStatus) {
+						body.status = affiliateStatus;
+					}
+
+					// Fazer requisição à API para editar afiliado
+					const options = {
+						method: 'PUT' as const,
+						url: `https://public-api.kiwify.com/v1/affiliates/${affiliateId}`,
 						headers: {
 							'Authorization': `Bearer ${accessToken}`,
 							'x-kiwify-account-id': credentials.accountId as string,

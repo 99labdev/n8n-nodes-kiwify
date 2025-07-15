@@ -40,6 +40,20 @@ Siga o [guia de instalação](https://docs.n8n.io/integrations/community-nodes/i
   - **Data De Fim** (obrigatório): Data de fim para estatísticas (formato: YYYY-MM-DD)
   - **ID Do Produto** (opcional): ID do produto para estatísticas específicas
 
+### Afiliados
+- **Listar Afiliados**: Obtenha uma lista de todos os afiliados
+  - **Tamanho Da Página** (opcional): Número de afiliados a retornar por página (padrão: 10)
+  - **Número Da Página** (opcional): Número da página a recuperar (padrão: 1)
+  - **Status** (opcional): Filtrar afiliados por status (ativo, bloqueado, recusado)
+  - **ID Do Produto** (opcional): Filtrar afiliados por ID do produto
+  - **Buscar** (opcional): Termo de busca para filtrar afiliados
+- **Consultar Afiliado**: Obtenha detalhes de um afiliado específico
+  - **ID Do Afiliado** (obrigatório): ID do afiliado a ser consultado
+- **Editar Afiliado**: Edite informações de um afiliado específico
+  - **ID Do Afiliado** (obrigatório): ID do afiliado a ser editado
+  - **Comissão** (opcional): Nova comissão do afiliado
+  - **Status** (opcional): Novo status do afiliado (ativo, bloqueado, recusado)
+
 ### Financeiro
 - **Consultar Saldos**: Obtenha todos os saldos da conta
 - **Consultar Saldo Específico**: Obtenha um saldo específico por Legal Entity ID
