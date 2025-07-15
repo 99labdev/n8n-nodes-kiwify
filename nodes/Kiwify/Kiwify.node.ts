@@ -39,8 +39,38 @@ export class Kiwify implements INodeType {
 						description: 'Get details of the Kiwify account',
 						action: 'Get account details',
 					},
+					{
+						name: 'List Products',
+						value: 'listProducts',
+						description: 'Get a list of all products',
+						action: 'List products',
+					},
 				],
 				default: 'getAccountDetails',
+			},
+			{
+				displayName: 'Page Size',
+				name: 'pageSize',
+				type: 'number',
+				default: 10,
+				description: 'Number of products to return per page',
+				displayOptions: {
+					show: {
+						operation: ['listProducts'],
+					},
+				},
+			},
+			{
+				displayName: 'Page Number',
+				name: 'pageNumber',
+				type: 'number',
+				default: 1,
+				description: 'Page number to retrieve',
+				displayOptions: {
+					show: {
+						operation: ['listProducts'],
+					},
+				},
 			},
 		],
 	};
@@ -82,6 +112,32 @@ export class Kiwify implements INodeType {
 					const options = {
 						method: 'GET' as const,
 						url: 'https://public-api.kiwify.com/v1/account-details',
+						headers: {
+							'Authorization': `Bearer ${accessToken}`,
+							'x-kiwify-account-id': credentials.accountId as string,
+						},
+						json: true,
+					};
+
+					responseData = await this.helpers.request(options);
+				} else if (operation === 'listProducts') {
+					// Get parameters for list products
+					const pageSize = this.getNodeParameter('pageSize', i) as number;
+					const pageNumber = this.getNodeParameter('pageNumber', i) as number;
+
+					// Build query parameters
+					const queryParams: string[] = [];
+					if (pageSize) {
+						queryParams.push(`page_size=${pageSize}`);
+					}
+					if (pageNumber) {
+						queryParams.push(`page_number=${pageNumber}`);
+					}
+
+					// Make API request to list products
+					const options = {
+						method: 'GET' as const,
+						url: `https://public-api.kiwify.com/v1/products${queryParams.length ? '?' + queryParams.join('&') : ''}`,
 						headers: {
 							'Authorization': `Bearer ${accessToken}`,
 							'x-kiwify-account-id': credentials.accountId as string,

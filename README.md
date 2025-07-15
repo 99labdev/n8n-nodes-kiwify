@@ -13,6 +13,11 @@ Siga o [guia de instalação](https://docs.n8n.io/integrations/community-nodes/i
 ### Conta
 - **Obter Detalhes da Conta**: Recupera detalhes sobre sua conta Kiwify
 
+### Produtos  
+- **Listar Produtos**: Obtenha uma lista de todos os produtos
+  - **Page Size** (opcional): Número de produtos a retornar por página (padrão: 10)
+  - **Page Number** (opcional): Número da página a recuperar (padrão: 1)
+
 ## Credenciais
 
 Para usar este node, você precisa configurar as credenciais da API da Kiwify:
