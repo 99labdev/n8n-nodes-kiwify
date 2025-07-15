@@ -34,9 +34,9 @@ Siga o [guia de instalação](https://docs.n8n.io/integrations/community-nodes/i
   - **ID Da Venda** (obrigatório): ID da venda a ser reembolsada
   - **Chave PIX** (opcional): Chave PIX para reembolso
 - **Consultar Estatísticas De Vendas**: Obtenha estatísticas de vendas
+  - **Data De Início** (obrigatório): Data de início para estatísticas (formato: YYYY-MM-DD)
+  - **Data De Fim** (obrigatório): Data de fim para estatísticas (formato: YYYY-MM-DD)
   - **ID Do Produto** (opcional): ID do produto para estatísticas específicas
-  - **Data De Início** (opcional): Data de início para estatísticas (formato: YYYY-MM-DD)
-  - **Data De Fim** (opcional): Data de fim para estatísticas (formato: YYYY-MM-DD)
 
 ## Credenciais
 

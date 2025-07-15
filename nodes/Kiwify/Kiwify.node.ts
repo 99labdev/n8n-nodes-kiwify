@@ -217,8 +217,9 @@ export class Kiwify implements INodeType {
 				displayName: 'Data De Início',
 				name: 'startDateStats',
 				type: 'string',
+				required: true,
 				default: '',
-				description: 'Data de início para estatísticas (formato: YYYY-MM-DD, opcional)',
+				description: 'Data de início para estatísticas (formato: YYYY-MM-DD)',
 				displayOptions: {
 					show: {
 						operation: ['getSalesStats'],
@@ -229,8 +230,9 @@ export class Kiwify implements INodeType {
 				displayName: 'Data De Fim',
 				name: 'endDateStats',
 				type: 'string',
+				required: true,
 				default: '',
-				description: 'Data de fim para estatísticas (formato: YYYY-MM-DD, opcional)',
+				description: 'Data de fim para estatísticas (formato: YYYY-MM-DD)',
 				displayOptions: {
 					show: {
 						operation: ['getSalesStats'],
@@ -445,16 +447,16 @@ export class Kiwify implements INodeType {
 					const startDateStats = this.getNodeParameter('startDateStats', i) as string;
 					const endDateStats = this.getNodeParameter('endDateStats', i) as string;
 
-					// Construir parâmetros de consulta
+					// Construir parâmetros de consulta (start_date e end_date são obrigatórios)
 					const queryParams: string[] = [];
+					queryParams.push(`start_date=${startDateStats}`);
+					queryParams.push(`end_date=${endDateStats}`);
 					if (productIdStats) queryParams.push(`product_id=${productIdStats}`);
-					if (startDateStats) queryParams.push(`start_date=${startDateStats}`);
-					if (endDateStats) queryParams.push(`end_date=${endDateStats}`);
 
 					// Fazer requisição à API para obter estatísticas
 					const options = {
 						method: 'GET' as const,
-						url: `https://public-api.kiwify.com/v1/stats${queryParams.length ? '?' + queryParams.join('&') : ''}`,
+						url: `https://public-api.kiwify.com/v1/stats?${queryParams.join('&')}`,
 						headers: {
 							'Authorization': `Bearer ${accessToken}`,
 							'x-kiwify-account-id': credentials.accountId as string,
