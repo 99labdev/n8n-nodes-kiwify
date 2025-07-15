@@ -34,6 +34,12 @@ export class Kiwify implements INodeType {
 				noDataExpression: true,
 				options: [
 					{
+						name: 'Atualizar Webhook',
+						value: 'updateWebhook',
+						description: 'Atualizar um webhook específico',
+						action: 'Atualizar webhook',
+					},
+					{
 						name: 'Consultar Afiliado',
 						value: 'getAffiliate',
 						description: 'Obter detalhes de um afiliado específico',
@@ -76,6 +82,24 @@ export class Kiwify implements INodeType {
 						action: 'Consultar venda',
 					},
 					{
+						name: 'Consultar Webhook',
+						value: 'getWebhook',
+						description: 'Obter detalhes de um webhook específico',
+						action: 'Consultar webhook',
+					},
+					{
+						name: 'Criar Webhook',
+						value: 'createWebhook',
+						description: 'Criar um novo webhook',
+						action: 'Criar webhook',
+					},
+					{
+						name: 'Deletar Webhook',
+						value: 'deleteWebhook',
+						description: 'Deletar um webhook específico',
+						action: 'Deletar webhook',
+					},
+					{
 						name: 'Editar Afiliado',
 						value: 'editAffiliate',
 						description: 'Editar informações de um afiliado específico',
@@ -104,6 +128,12 @@ export class Kiwify implements INodeType {
 						value: 'listSales',
 						description: 'Obter uma lista de todas as vendas',
 						action: 'Listar vendas',
+					},
+					{
+						name: 'Listar Webhooks',
+						value: 'listWebhooks',
+						description: 'Obter uma lista de todos os webhooks',
+						action: 'Listar webhooks',
 					},
 					{
 						name: 'Obter Detalhes Da Conta',
@@ -151,6 +181,159 @@ export class Kiwify implements INodeType {
 				displayOptions: {
 					show: {
 						operation: ['getAffiliate', 'editAffiliate'],
+					},
+				},
+			},
+			// Parâmetro para Consultar, Atualizar e Deletar Webhook
+			{
+				displayName: 'ID Do Webhook',
+				name: 'webhookId',
+				type: 'string',
+				required: true,
+				default: '',
+				description: 'ID do webhook a ser consultado, atualizado ou deletado',
+				displayOptions: {
+					show: {
+						operation: ['getWebhook', 'updateWebhook', 'deleteWebhook'],
+					},
+				},
+			},
+			// Parâmetros para Criar e Atualizar Webhook
+			{
+				displayName: 'Nome Do Webhook',
+				name: 'webhookName',
+				type: 'string',
+				required: true,
+				default: '',
+				displayOptions: {
+					show: {
+						operation: ['createWebhook', 'updateWebhook'],
+					},
+				},
+			},
+			{
+				displayName: 'URL Do Webhook',
+				name: 'webhookUrl',
+				type: 'string',
+				required: true,
+				default: '',
+				description: 'URL de destino do webhook',
+				displayOptions: {
+					show: {
+						operation: ['createWebhook', 'updateWebhook'],
+					},
+				},
+			},
+			{
+				displayName: 'Produtos',
+				name: 'webhookProducts',
+				type: 'string',
+				default: 'all',
+				description: 'ID do produto específico ou "all" para todos os produtos',
+				displayOptions: {
+					show: {
+						operation: ['createWebhook', 'updateWebhook'],
+					},
+				},
+			},
+			{
+				displayName: 'Triggers',
+				name: 'webhookTriggers',
+				type: 'multiOptions',
+				default: [],
+				description: 'Eventos que irão disparar o webhook',
+				options: [
+					{ name: 'Assinatura Atrasada', value: 'subscription_late' },
+					{ name: 'Assinatura Cancelada', value: 'subscription_canceled' },
+					{ name: 'Assinatura Renovada', value: 'subscription_renewed' },
+					{ name: 'Boleto Gerado', value: 'boleto_gerado' },
+					{ name: 'Carrinho Abandonado', value: 'carrinho_abandonado' },
+					{ name: 'Chargeback', value: 'chargeback' },
+					{ name: 'Compra Aprovada', value: 'compra_aprovada' },
+					{ name: 'Compra Recusada', value: 'compra_recusada' },
+					{ name: 'Compra Reembolsada', value: 'compra_reembolsada' },
+					{ name: 'PIX Gerado', value: 'pix_gerado' },
+				],
+				displayOptions: {
+					show: {
+						operation: ['createWebhook', 'updateWebhook'],
+					},
+				},
+			},
+			{
+				displayName: 'Token',
+				name: 'webhookToken',
+				type: 'string',
+				typeOptions: {
+					password: true,
+				},
+				default: '',
+				description: 'Token personalizado para o webhook (opcional)',
+				displayOptions: {
+					show: {
+						operation: ['createWebhook', 'updateWebhook'],
+					},
+				},
+			},
+			// Parâmetros para Listar Webhooks
+			{
+				displayName: 'Tamanho Da Página',
+				name: 'pageSizeWebhooks',
+				type: 'number',
+				default: 10,
+				description: 'Número de webhooks a retornar por página',
+				displayOptions: {
+					show: {
+						operation: ['listWebhooks'],
+					},
+				},
+			},
+			{
+				displayName: 'Número Da Página',
+				name: 'pageNumberWebhooks',
+				type: 'number',
+				default: 1,
+				description: 'Número da página a recuperar',
+				displayOptions: {
+					show: {
+						operation: ['listWebhooks'],
+					},
+				},
+			},
+			{
+				displayName: 'ID Do Produto',
+				name: 'productIdWebhookFilter',
+				type: 'string',
+				default: '',
+				description: 'Filtrar webhooks por ID do produto (opcional)',
+				displayOptions: {
+					show: {
+						operation: ['listWebhooks'],
+					},
+				},
+			},
+			{
+				displayName: 'Buscar',
+				name: 'searchTermWebhooks',
+				type: 'string',
+				default: '',
+				description: 'Termo de busca para filtrar webhooks (opcional)',
+				displayOptions: {
+					show: {
+						operation: ['listWebhooks'],
+					},
+				},
+			},
+			// Parâmetros para Reembolsar Venda
+			{
+				displayName: 'Chave PIX',
+				name: 'pixKey',
+				type: 'string',
+				default: '',
+				description: 'Chave PIX para reembolso (opcional)',
+				displayOptions: {
+					show: {
+						operation: ['refundSale'],
 					},
 				},
 			},
@@ -851,6 +1034,131 @@ export class Kiwify implements INodeType {
 							'Content-Type': 'application/json',
 						},
 						body: JSON.stringify(body),
+						json: true,
+					};
+
+					responseData = await this.helpers.request(options);
+				} else if (operation === 'listWebhooks') {
+					// Obter parâmetros para listar webhooks
+					const pageSizeWebhooks = this.getNodeParameter('pageSizeWebhooks', i) as number;
+					const pageNumberWebhooks = this.getNodeParameter('pageNumberWebhooks', i) as number;
+					const productIdWebhookFilter = this.getNodeParameter('productIdWebhookFilter', i) as string;
+					const searchTermWebhooks = this.getNodeParameter('searchTermWebhooks', i) as string;
+
+					// Construir parâmetros de consulta
+					const queryParams: string[] = [];
+					if (pageSizeWebhooks) queryParams.push(`page_size=${pageSizeWebhooks}`);
+					if (pageNumberWebhooks) queryParams.push(`page_number=${pageNumberWebhooks}`);
+					if (productIdWebhookFilter) queryParams.push(`product_id=${productIdWebhookFilter}`);
+					if (searchTermWebhooks) queryParams.push(`search=${searchTermWebhooks}`);
+
+					// Fazer requisição à API para listar webhooks
+					const options = {
+						method: 'GET' as const,
+						url: `https://public-api.kiwify.com/v1/webhooks${queryParams.length ? '?' + queryParams.join('&') : ''}`,
+						headers: {
+							'Authorization': `Bearer ${accessToken}`,
+							'x-kiwify-account-id': credentials.accountId as string,
+						},
+						json: true,
+					};
+
+					responseData = await this.helpers.request(options);
+				} else if (operation === 'getWebhook') {
+					// Obter parâmetro do ID do webhook
+					const webhookId = this.getNodeParameter('webhookId', i) as string;
+
+					// Fazer requisição à API para consultar webhook específico
+					const options = {
+						method: 'GET' as const,
+						url: `https://public-api.kiwify.com/v1/webhooks/${webhookId}`,
+						headers: {
+							'Authorization': `Bearer ${accessToken}`,
+							'x-kiwify-account-id': credentials.accountId as string,
+						},
+						json: true,
+					};
+
+					responseData = await this.helpers.request(options);
+				} else if (operation === 'createWebhook') {
+					// Obter parâmetros para criar webhook
+					const webhookName = this.getNodeParameter('webhookName', i) as string;
+					const webhookUrl = this.getNodeParameter('webhookUrl', i) as string;
+					const webhookProducts = this.getNodeParameter('webhookProducts', i) as string;
+					const webhookTriggers = this.getNodeParameter('webhookTriggers', i) as string[];
+					const webhookToken = this.getNodeParameter('webhookToken', i) as string;
+
+					// Construir body da requisição
+					const body: any = {
+						name: webhookName,
+						url: webhookUrl,
+						products: webhookProducts,
+						triggers: webhookTriggers,
+					};
+					if (webhookToken) {
+						body.token = webhookToken;
+					}
+
+					// Fazer requisição à API para criar webhook
+					const options = {
+						method: 'POST' as const,
+						url: 'https://public-api.kiwify.com/v1/webhooks',
+						headers: {
+							'Authorization': `Bearer ${accessToken}`,
+							'x-kiwify-account-id': credentials.accountId as string,
+							'Content-Type': 'application/json',
+						},
+						body: JSON.stringify(body),
+						json: true,
+					};
+
+					responseData = await this.helpers.request(options);
+				} else if (operation === 'updateWebhook') {
+					// Obter parâmetros para atualizar webhook
+					const webhookId = this.getNodeParameter('webhookId', i) as string;
+					const webhookName = this.getNodeParameter('webhookName', i) as string;
+					const webhookUrl = this.getNodeParameter('webhookUrl', i) as string;
+					const webhookProducts = this.getNodeParameter('webhookProducts', i) as string;
+					const webhookTriggers = this.getNodeParameter('webhookTriggers', i) as string[];
+					const webhookToken = this.getNodeParameter('webhookToken', i) as string;
+
+					// Construir body da requisição
+					const body: any = {
+						name: webhookName,
+						url: webhookUrl,
+						products: webhookProducts,
+						triggers: webhookTriggers,
+					};
+					if (webhookToken) {
+						body.token = webhookToken;
+					}
+
+					// Fazer requisição à API para atualizar webhook
+					const options = {
+						method: 'PUT' as const,
+						url: `https://public-api.kiwify.com/v1/webhooks/${webhookId}`,
+						headers: {
+							'Authorization': `Bearer ${accessToken}`,
+							'x-kiwify-account-id': credentials.accountId as string,
+							'Content-Type': 'application/json',
+						},
+						body: JSON.stringify(body),
+						json: true,
+					};
+
+					responseData = await this.helpers.request(options);
+				} else if (operation === 'deleteWebhook') {
+					// Obter parâmetro do ID do webhook
+					const webhookId = this.getNodeParameter('webhookId', i) as string;
+
+					// Fazer requisição à API para deletar webhook
+					const options = {
+						method: 'DELETE' as const,
+						url: `https://public-api.kiwify.com/v1/webhooks/${webhookId}`,
+						headers: {
+							'Authorization': `Bearer ${accessToken}`,
+							'x-kiwify-account-id': credentials.accountId as string,
+						},
 						json: true,
 					};
 

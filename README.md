@@ -54,6 +54,30 @@ Siga o [guia de instalação](https://docs.n8n.io/integrations/community-nodes/i
   - **Comissão** (opcional): Nova comissão do afiliado
   - **Status** (opcional): Novo status do afiliado (ativo, bloqueado, recusado)
 
+### Webhooks
+- **Listar Webhooks**: Obtenha uma lista de todos os webhooks
+  - **Tamanho Da Página** (opcional): Número de webhooks a retornar por página (padrão: 10)
+  - **Número Da Página** (opcional): Número da página a recuperar (padrão: 1)
+  - **ID Do Produto** (opcional): Filtrar webhooks por ID do produto
+  - **Buscar** (opcional): Termo de busca para filtrar webhooks
+- **Consultar Webhook**: Obtenha detalhes de um webhook específico
+  - **ID Do Webhook** (obrigatório): ID do webhook a ser consultado
+- **Criar Webhook**: Crie um novo webhook
+  - **Nome Do Webhook** (obrigatório): Nome do webhook
+  - **URL Do Webhook** (obrigatório): URL de destino do webhook
+  - **Produtos** (opcional): ID do produto específico ou "all" para todos os produtos (padrão: "all")
+  - **Triggers** (obrigatório): Eventos que irão disparar o webhook
+  - **Token** (opcional): Token personalizado para o webhook
+- **Atualizar Webhook**: Atualize um webhook específico
+  - **ID Do Webhook** (obrigatório): ID do webhook a ser atualizado
+  - **Nome Do Webhook** (obrigatório): Nome do webhook
+  - **URL Do Webhook** (obrigatório): URL de destino do webhook
+  - **Produtos** (opcional): ID do produto específico ou "all" para todos os produtos (padrão: "all")
+  - **Triggers** (obrigatório): Eventos que irão disparar o webhook
+  - **Token** (opcional): Token personalizado para o webhook
+- **Deletar Webhook**: Delete um webhook específico
+  - **ID Do Webhook** (obrigatório): ID do webhook a ser deletado
+
 ### Financeiro
 - **Consultar Saldos**: Obtenha todos os saldos da conta
 - **Consultar Saldo Específico**: Obtenha um saldo específico por Legal Entity ID
