@@ -1,59 +1,59 @@
 # n8n-nodes-kiwify
 
-This is an n8n community node that allows you to integrate with the Kiwify API. It enables you to access various Kiwify services and data within your n8n workflows.
+Este é um node da comunidade n8n que permite integrar com a API da Kiwify. Ele possibilita acessar vários serviços e dados da Kiwify dentro dos seus workflows do n8n.
 
-[Kiwify](https://kiwify.com.br/) is a digital product sales platform that allows creators to sell courses, ebooks, and other digital content.
+[Kiwify](https://kiwify.com.br/) é uma plataforma de vendas de produtos digitais que permite criadores venderem cursos, ebooks e outros conteúdos digitais.
 
-## Installation
+## Instalação
 
-Follow the [installation guide](https://docs.n8n.io/integrations/community-nodes/installation/) in the n8n community nodes documentation.
+Siga o [guia de instalação](https://docs.n8n.io/integrations/community-nodes/installation/) na documentação de nodes da comunidade do n8n.
 
-## Operations
+## Operações
 
-### Account
-- **Get Account Details**: Retrieve details about your Kiwify account
+### Conta
+- **Obter Detalhes da Conta**: Recupera detalhes sobre sua conta Kiwify
 
-## Credentials
+## Credenciais
 
-To use this node, you need to configure the Kiwify API credentials:
+Para usar este node, você precisa configurar as credenciais da API da Kiwify:
 
-1. **Client ID**: Your Kiwify API Client ID
-2. **Client Secret**: Your Kiwify API Client Secret
-3. **Account ID**: Your Kiwify Account ID
+1. **Client ID**: Seu Client ID da API Kiwify
+2. **Client Secret**: Seu Client Secret da API Kiwify  
+3. **Account ID**: Seu Account ID da Kiwify
 
-### How to get your credentials:
+### Como obter suas credenciais:
 
-1. Log in to your Kiwify dashboard
-2. Navigate to Apps > API > Create API Key
-3. Copy the `client_id` 
-4. Copy the `client_secret`
-5. Copy the `account_id` from the same page
+1. Faça login no seu painel da Kiwify
+2. Navegue para Apps > API > Criar Chave API
+3. Copie o `client_id` 
+4. Copie o `client_secret`
+5. Copie o `account_id` da mesma página
 
-The node will automatically handle the OAuth 2.0 flow by:
-1. Using your Client ID and Client Secret to obtain an access token
-2. Using the access token and Account ID for subsequent API requests
+O node automaticamente gerenciará o fluxo OAuth 2.0:
+1. Usando seu Client ID e Client Secret para obter um access token
+2. Usando o access token e Account ID para requisições subsequentes da API
 
-### Authentication Flow:
+### Fluxo de Autenticação:
 
-The node implements the complete OAuth 2.0 flow as specified in the Kiwify API documentation:
+O node implementa o fluxo OAuth 2.0 completo conforme especificado na documentação da API da Kiwify:
 
-1. **Token Request**: `POST /oauth/token` with client_id and client_secret
-2. **API Requests**: Uses the returned access_token in Authorization header along with x-kiwify-account-id
+1. **Requisição de Token**: `POST /oauth/token` com client_id e client_secret
+2. **Requisições da API**: Usa o access_token retornado no cabeçalho Authorization junto com x-kiwify-account-id
 
-For more information on authentication, visit the [Kiwify API documentation](https://docs.kiwify.com.br/api-reference/general).
+Para mais informações sobre autenticação, visite a [documentação da API da Kiwify](https://docs.kiwify.com.br/api-reference/general).
 
-## Resources
+## Recursos
 
-* [n8n community nodes documentation](https://docs.n8n.io/integrations/community-nodes/)
-* [Kiwify API documentation](https://docs.kiwify.com.br/api-reference/general)
+* [Documentação de nodes da comunidade n8n](https://docs.n8n.io/integrations/community-nodes/)
+* [Documentação da API da Kiwify](https://docs.kiwify.com.br/api-reference/general)
 
-## Version history
+## Histórico de versões
 
 ### 0.1.0
-- Initial release
-- Added account details operation
-- Basic Kiwify API integration
+- Lançamento inicial
+- Adicionada operação de detalhes da conta
+- Integração básica com a API da Kiwify
 
-## License
+## Licença
 
 [MIT](https://github.com/99labdev/n8n-nodes-kiwify/blob/master/LICENSE.md)
