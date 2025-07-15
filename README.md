@@ -1,48 +1,59 @@
-![Banner image](https://user-images.githubusercontent.com/10284570/173569848-c624317f-42b1-45a6-ab09-f0ea3c247648.png)
+# n8n-nodes-kiwify
 
-# n8n-nodes-starter
+Este é um node da comunidade n8n que permite integrar com a API da Kiwify. Ele possibilita acessar vários serviços e dados da Kiwify dentro dos seus workflows do n8n.
 
-This repo contains example nodes to help you get started building your own custom integrations for [n8n](https://n8n.io). It includes the node linter and other dependencies.
+[Kiwify](https://kiwify.com.br/) é uma plataforma de vendas de produtos digitais que permite criadores venderem cursos, ebooks e outros conteúdos digitais.
 
-To make your custom node available to the community, you must create it as an npm package, and [submit it to the npm registry](https://docs.npmjs.com/packages-and-modules/contributing-packages-to-the-registry).
+## Instalação
 
-If you would like your node to be available on n8n cloud you can also [submit your node for verification](https://docs.n8n.io/integrations/creating-nodes/deploy/submit-community-nodes/).
+Siga o [guia de instalação](https://docs.n8n.io/integrations/community-nodes/installation/) na documentação de nodes da comunidade do n8n.
 
-## Prerequisites
+## Operações
 
-You need the following installed on your development machine:
+### Conta
+- **Obter Detalhes da Conta**: Recupera detalhes sobre sua conta Kiwify
 
-* [git](https://git-scm.com/downloads)
-* Node.js and npm. Minimum version Node 20. You can find instructions on how to install both using nvm (Node Version Manager) for Linux, Mac, and WSL [here](https://github.com/nvm-sh/nvm). For Windows users, refer to Microsoft's guide to [Install NodeJS on Windows](https://docs.microsoft.com/en-us/windows/dev-environment/javascript/nodejs-on-windows).
-* Install n8n with:
-  ```
-  npm install n8n -g
-  ```
-* Recommended: follow n8n's guide to [set up your development environment](https://docs.n8n.io/integrations/creating-nodes/build/node-development-environment/).
+## Credenciais
 
-## Using this starter
+Para usar este node, você precisa configurar as credenciais da API da Kiwify:
 
-These are the basic steps for working with the starter. For detailed guidance on creating and publishing nodes, refer to the [documentation](https://docs.n8n.io/integrations/creating-nodes/).
+1. **Client ID**: Seu Client ID da API Kiwify
+2. **Client Secret**: Seu Client Secret da API Kiwify  
+3. **Account ID**: Seu Account ID da Kiwify
 
-1. [Generate a new repository](https://github.com/n8n-io/n8n-nodes-starter/generate) from this template repository.
-2. Clone your new repo:
-   ```
-   git clone https://github.com/<your organization>/<your-repo-name>.git
-   ```
-3. Run `npm i` to install dependencies.
-4. Open the project in your editor.
-5. Browse the examples in `/nodes` and `/credentials`. Modify the examples, or replace them with your own nodes.
-6. Update the `package.json` to match your details.
-7. Run `npm run lint` to check for errors or `npm run lintfix` to automatically fix errors when possible.
-8. Test your node locally. Refer to [Run your node locally](https://docs.n8n.io/integrations/creating-nodes/test/run-node-locally/) for guidance.
-9. Replace this README with documentation for your node. Use the [README_TEMPLATE](README_TEMPLATE.md) to get started.
-10. Update the LICENSE file to use your details.
-11. [Publish](https://docs.npmjs.com/packages-and-modules/contributing-packages-to-the-registry) your package to npm.
+### Como obter suas credenciais:
 
-## More information
+1. Faça login no seu painel da Kiwify
+2. Navegue para Apps > API > Criar Chave API
+3. Copie o `client_id` 
+4. Copie o `client_secret`
+5. Copie o `account_id` da mesma página
 
-Refer to our [documentation on creating nodes](https://docs.n8n.io/integrations/creating-nodes/) for detailed information on building your own nodes.
+O node automaticamente gerenciará o fluxo OAuth 2.0:
+1. Usando seu Client ID e Client Secret para obter um access token
+2. Usando o access token e Account ID para requisições subsequentes da API
 
-## License
+### Fluxo de Autenticação:
 
-[MIT](https://github.com/n8n-io/n8n-nodes-starter/blob/master/LICENSE.md)
+O node implementa o fluxo OAuth 2.0 completo conforme especificado na documentação da API da Kiwify:
+
+1. **Requisição de Token**: `POST /oauth/token` com client_id e client_secret
+2. **Requisições da API**: Usa o access_token retornado no cabeçalho Authorization junto com x-kiwify-account-id
+
+Para mais informações sobre autenticação, visite a [documentação da API da Kiwify](https://docs.kiwify.com.br/api-reference/general).
+
+## Recursos
+
+* [Documentação de nodes da comunidade n8n](https://docs.n8n.io/integrations/community-nodes/)
+* [Documentação da API da Kiwify](https://docs.kiwify.com.br/api-reference/general)
+
+## Histórico de versões
+
+### 0.1.0
+- Lançamento inicial
+- Adicionada operação de detalhes da conta
+- Integração básica com a API da Kiwify
+
+## Licença
+
+[MIT](https://github.com/99labdev/n8n-nodes-kiwify/blob/master/LICENSE.md)

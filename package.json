@@ -1,22 +1,25 @@
 {
-  "name": "n8n-nodes-<...>",
+  "name": "n8n-nodes-kiwify",
   "version": "0.1.0",
-  "description": "",
+  "description": "n8n node for Kiwify API integration",
   "keywords": [
-    "n8n-community-node-package"
+    "n8n-community-node-package",
+    "kiwify",
+    "api",
+    "integration"
   ],
   "license": "MIT",
-  "homepage": "",
+  "homepage": "https://github.com/99labdev/n8n-nodes-kiwify",
   "author": {
-    "name": "",
-    "email": ""
+    "name": "99lab",
+    "email": "contato@99lab.dev"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/<...>/n8n-nodes-<...>.git"
+    "url": "https://github.com/99labdev/n8n-nodes-kiwify.git"
   },
   "engines": {
-    "node": ">=20.15"
+    "node": ">=20.11"
   },
   "main": "index.js",
   "scripts": {
@@ -33,12 +36,10 @@
   "n8n": {
     "n8nNodesApiVersion": 1,
     "credentials": [
-      "dist/credentials/ExampleCredentialsApi.credentials.js",
-      "dist/credentials/HttpBinApi.credentials.js"
+      "dist/credentials/KiwifyApi.credentials.js"
     ],
     "nodes": [
-      "dist/nodes/ExampleNode/ExampleNode.node.js",
-      "dist/nodes/HttpBin/HttpBin.node.js"
+      "dist/nodes/Kiwify/Kiwify.node.js"
     ]
   },
   "devDependencies": {
